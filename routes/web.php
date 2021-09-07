@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('/noticias', 'NoticiaController@index')->name('noticias');
     Route::get('/getNoticias', 'NoticiaController@getNoticias');
+    Route::get('/getNoticia/{id}', 'NoticiaController@getNoticia');
     Route::get('/getFavoritasByUser', 'NoticiaController@getFavoritasByUser');
     Route::get('/favoritas', 'NoticiaController@favoritas')->name('favoritas');
     Route::put('/toggleFavourite/{id}', 'NoticiaController@toggleFavourite');

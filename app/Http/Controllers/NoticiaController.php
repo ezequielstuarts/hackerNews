@@ -62,6 +62,7 @@ class NoticiaController extends Controller
             $client = new \GuzzleHttp\Client();
             $response = $client->get('https://hacker-news.firebaseio.com/v0/item/'.$id.'.json?print=pretty')->getBody();
             $noticia = json_decode($response->getContents(), true);
+
             if(!isset($noticia['title'])) {
                 $success = 'No se puede agregar una noticia sin título.';
                 return response()->json($success);
@@ -78,8 +79,23 @@ class NoticiaController extends Controller
                 'fav' => 1,
             ]);
             $success = 200;
-        }        
+        }
         return response()->json($success);
+    }
+    
+    public function getNoticia($id) {        
+        $client = new \GuzzleHttp\Client();
+        $response = $client->get('https://hacker-news.firebaseio.com/v0/item/'.$id.'.json?print=pretty')->getBody();
+        $noticia = json_decode($response->getContents(), true);
+
+        $existe =  DB::table('favourite_news')
+        ->where('user_id',Auth::user()->id)
+        ->where('noticia_id',$id)
+        ->get();
+        if(count($existe)>0) {
+            $noticia += ['fav' => 1];
+        }
+        return response()->json(['data' => $noticia], 200);
     }
     
     public function favoritas() {

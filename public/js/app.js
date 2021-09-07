@@ -1933,12 +1933,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['noticia'],
   data: function data() {
-    return {};
+    return {
+      refresh: null
+    };
   },
   mounted: function mounted() {},
   methods: {
     toggleFavourite: function toggleFavourite(id) {
-      axios.put("toggleFavourite/".concat(id)).then(function (response) {
+      var _this = this;
+
+      axios.put('toggleFavourite/' + id).then(function (response) {
+        _this.$emit('getNoticiasFavoritas'); // this.getNoticia(id);
+
+
         if (response.data == 200) {
           toastr__WEBPACK_IMPORTED_MODULE_0___default.a.success('Noticia Agregada a favoritos');
         } else if (response.data == 204) {
@@ -1947,7 +1954,16 @@ __webpack_require__.r(__webpack_exports__);
           toastr__WEBPACK_IMPORTED_MODULE_0___default.a.error(response.data);
         }
 
-        vm.$forceUpdate();
+        ;
+      })["catch"](function (error) {
+        return toastr__WEBPACK_IMPORTED_MODULE_0___default.a.error('¡Sucedio algun error!');
+      });
+    },
+    getNoticia: function getNoticia(id) {
+      var _this2 = this;
+
+      axios.get('/getNoticia/' + id).then(function (response) {
+        _this2.noticia = response.data.data;
       })["catch"](function (error) {
         return toastr__WEBPACK_IMPORTED_MODULE_0___default.a.error('¡Sucedio algun error!');
       });
@@ -38215,7 +38231,6 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("a", {
-          staticClass: "b-3",
           attrs: { href: _vm.noticia.url, target: "blank" },
           domProps: { textContent: _vm._s(_vm.noticia.url) }
         }),
@@ -38314,7 +38329,12 @@ var render = function() {
       _vm._l(_vm.noticias, function(noticia) {
         return _c("noticia-component", {
           key: noticia.noticia_id,
-          attrs: { noticia: noticia }
+          attrs: { noticia: noticia },
+          on: {
+            getNoticia: function($event) {
+              "getNoticia/" + _vm.id
+            }
+          }
         })
       })
     ],
@@ -38367,7 +38387,8 @@ var render = function() {
       _vm._l(_vm.noticias, function(noticia) {
         return _c("noticia-component", {
           key: noticia.noticia_id,
-          attrs: { noticia: noticia, user_id: _vm.user_id }
+          attrs: { noticia: noticia, user_id: _vm.user_id },
+          on: { getNoticiasFavoritas: _vm.getNoticiasFavoritas }
         })
       })
     ],

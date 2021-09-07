@@ -4,7 +4,7 @@
             <div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>
         </div>
         <noticia-component v-for="noticia in noticias"
-            :key="noticia.noticia_id"
+            :key="noticia.noticia_id" @getNoticia="'getNoticia/'+id"
             :noticia="noticia"></noticia-component>
     </div>    
 </template>

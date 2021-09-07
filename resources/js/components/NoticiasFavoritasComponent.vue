@@ -6,7 +6,7 @@
             </div>
         </div>
         
-        <noticia-component v-for="noticia in noticias" :key="noticia.noticia_id" :noticia="noticia" :user_id="user_id"></noticia-component>
+        <noticia-component v-for="noticia in noticias" :key="noticia.noticia_id" :noticia="noticia" :user_id="user_id" @getNoticiasFavoritas="getNoticiasFavoritas"></noticia-component>
     </div>    
 </template>
 
